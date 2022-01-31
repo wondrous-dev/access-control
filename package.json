@@ -1,0 +1,33 @@
+{
+	"name": "access-control",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "git@github.com:wondrous-dev/access-control.git",
+	"author": "Andros <wong22@hotmail.co.uk>",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"dev": "DEV=true ts-node-dev --respawn --inspect -- src/index.ts",
+		"test": "jest",
+		"postinstall": "yarn build",
+		"lint": "../../node_modules/.bin/eslint --max-warnings=0 --ext .ts src/ test/",
+		"lintfix": "../../node_modules/.bin/eslint --fix 'src/**/*.ts'",
+		"precommit": "lint-staged"
+	},
+	"dependencies": {
+		"dotenv": "^10.0.0",
+		"koa": "^2.13.4",
+		"koa-bodyparser": "^4.3.0",
+		"koa-json": "^2.0.2",
+		"koa-logger": "^3.2.1",
+		"koa-router": "^10.1.1",
+		"lit-js-sdk": "^1.1.99",
+		"reduct": "^3.3.1"
+	},
+	"devDependencies": {
+		"@types/koa": "^2.13.4",
+		"ts-node-dev": "^1.1.8",
+		"typescript": "^4.5.4"
+	}
+}
