@@ -2,6 +2,10 @@ import Koa from "koa"
 import logger from "koa-logger"
 import json from "koa-json"
 import bodyParser from "koa-bodyparser"
+import mount from "koa-mount"
+import serve from "koa-static"
+
+import path from "path"
 
 import router from "./Router"
 
@@ -23,11 +27,14 @@ export class Server {
 		this.app.use(json())
 		this.app.use(logger())
 		this.app.use(bodyParser())
+    const ppath = path.join(__dirname, '../', '/static')
+    console.log("PATH: " + ppath)
+    this.app.use(mount('/public ', serve(ppath)))
 		this.app.use(router.routes()).use(router.allowedMethods())
 	}
 
 	start(): void {
-		const port = process.env.PORT || 4005
+		const port = process.env.PORT || 5002
 		this.app.listen({ port }, () => {
 			console.log(`Access control server ready at http://localhost:${port}`)
 		})
