@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: token-gating-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: token-gating-service
+  template:
+    metadata:
+      labels:
+        app: token-gating-service
+    spec:
+      containers:
+      - name: token-gating-service
+        image: gcr.io/wondrous-1587456307075/token-gating-service:VERSION
+        ports:
+        - containerPort: 5002
+        env:
+          - name: CORE_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: core-api-secret
+                key: CORE_API_SECRET
