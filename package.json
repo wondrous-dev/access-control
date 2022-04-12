@@ -17,7 +17,6 @@
 		"precommit": "lint-staged"
 	},
 	"dependencies": {
-		"@guildxyz/sdk": "^1.0.7",
 		"crypto": "^1.0.1",
 		"dotenv": "^10.0.0",
 		"ethers": "^5.6.2",
