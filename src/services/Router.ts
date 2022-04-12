@@ -47,7 +47,6 @@ router.post("/access/provision", async (ctx, next) => {
         success: false,
         message: (e as any).message,
       };
-      console.log('asdfasdf', (e as any).message)
       return await next();
     }
     throw new Error("Failed to save access conditions: " + e);
@@ -73,7 +72,6 @@ router.post("/access/request", async (ctx, next) => {
   );
 
   const { resourceId, authSig, accessCondition } = data;
-
   try {
     const jwt = await litNodeClient.getSignedToken({
       accessControlConditions: accessCondition,
@@ -87,8 +85,8 @@ router.post("/access/request", async (ctx, next) => {
       !verified ||
       payload.baseUrl !== resourceId["baseUrl"] ||
       payload.path !== resourceId["path"] ||
-      payload.orgId !== "" ||
-      payload.role !== "" ||
+      payload.orgId !== resourceId['orgId'] ||
+      payload.role !== resourceId['role'] ||
       payload.extraData !== ""
     ) {
       ctx.status = 403;
@@ -99,7 +97,7 @@ router.post("/access/request", async (ctx, next) => {
       return await next();
     }
   } catch (e) {
-    ctx.status = 403;
+    ctx.status = 400;
     ctx.body = {
       success: false,
       // Unfortunately if the user doesn't have access, sometimes LIT throws
