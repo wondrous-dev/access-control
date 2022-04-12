@@ -1,20 +1,16 @@
 {
-	"name": "access-control",
+	"name": "token-gating-service",
 	"version": "1.0.0",
 	"main": "index.js",
-	"repository": "git@github.com:wondrous-dev/access-control.git",
+	"repository": "git@github.com:wondrous-dev/token-gating-service.git",
 	"author": "Andros <wong22@hotmail.co.uk>",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc && yarn run copy-files",
-		"copy-files": "cp -r ./src/static ./dist/static",
+		"build": "tsc",
 		"start": "node dist/index.js",
+		"lint": "./node_modules/.bin/eslint --max-warnings=0 --ext .ts src/",
 		"dev": "DEV=true ts-node-dev --respawn --inspect -- src/index.ts",
-		"test": "jest",
-		"postinstall": "yarn build",
-		"lint": "../../node_modules/.bin/eslint --max-warnings=0 --ext .ts src/ test/",
-		"lintfix": "../../node_modules/.bin/eslint --fix 'src/**/*.ts'",
-		"precommit": "lint-staged"
+		"lintfix": "./node_modules/.bin/eslint --fix 'src/**/*.ts'"
 	},
 	"dependencies": {
 		"crypto": "^1.0.1",
