@@ -10,6 +10,12 @@ router.get("/", async (ctx, next) => {
 
 const DEFAULT_CHAIN = "ethereum";
 
+interface litSDKError {
+  message: string;
+  name: string;
+  errorCode: string;
+}
+
 router.post("/access/provision", async (ctx, next) => {
   const data = ctx.request.body;
   if (!data || Object.keys(data).length == 0) {
@@ -59,7 +65,6 @@ router.post("/access/provision", async (ctx, next) => {
   await next();
 });
 
-
 router.post("/access/request", async (ctx, next) => {
   const data = ctx.request.body;
   if (!data) {
@@ -85,7 +90,7 @@ router.post("/access/request", async (ctx, next) => {
       !verified ||
       payload.baseUrl !== resourceId["baseUrl"] ||
       payload.path !== resourceId["path"] ||
-      payload.orgId !== resourceId['orgId'] ||
+      payload.orgId !== resourceId["orgId"] ||
       payload.extraData !== ""
     ) {
       ctx.status = 403;
@@ -96,7 +101,16 @@ router.post("/access/request", async (ctx, next) => {
       return await next();
     }
   } catch (e) {
-    const errorMessage = (e as Error).message
+    const errorMessage = (e as litSDKError).message;
+    const errorCode = (e as litSDKError).errorCode;
+    if (errorCode == "not_authorized") {
+      ctx.status = 403;
+      ctx.body = {
+        success: false,
+        message: errorMessage,
+      };
+      return await next();
+    }
     ctx.status = 400;
     ctx.body = {
       success: false,
