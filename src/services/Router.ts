@@ -86,7 +86,6 @@ router.post("/access/request", async (ctx, next) => {
       payload.baseUrl !== resourceId["baseUrl"] ||
       payload.path !== resourceId["path"] ||
       payload.orgId !== resourceId['orgId'] ||
-      payload.role !== resourceId['role'] ||
       payload.extraData !== ""
     ) {
       ctx.status = 403;
@@ -97,6 +96,7 @@ router.post("/access/request", async (ctx, next) => {
       return await next();
     }
   } catch (e) {
+    const errorMessage = (e as Error).message
     ctx.status = 400;
     ctx.body = {
       success: false,
@@ -105,7 +105,7 @@ router.post("/access/request", async (ctx, next) => {
       // and internal error.
       message:
         "Something went wrong or the provided user does not have access to provided path: " +
-        e,
+        errorMessage,
     };
     return await next();
   }
